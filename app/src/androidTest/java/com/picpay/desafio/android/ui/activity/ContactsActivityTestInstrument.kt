@@ -28,23 +28,9 @@ class ContactsActivityTestInstrument {
     var mActivityTestRule = ActivityScenarioRule(ContactsActivity::class.java)
 
     @Test
-    fun contactsActivityTestInstrument() {
+    fun contactsActivityTestIsntrumented() {
 
-        val linearLayout = onView(
-            allOf(
-                childAtPosition(
-                    childAtPosition(
-                        withId(android.R.id.content),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        linearLayout.check(matches(isDisplayed()))
-
-        val textView = onView(
+        /*val textView = onView(
             allOf(
                 withId(R.id.title), withText("Contatos"),
                 childAtPosition(
@@ -57,7 +43,7 @@ class ContactsActivityTestInstrument {
                 isDisplayed()
             )
         )
-        textView.check(matches(withText("Contatos")))
+        textView.check(matches(withText("Contatos")))*/
 
         val textView2 = onView(
             allOf(
@@ -114,12 +100,26 @@ class ContactsActivityTestInstrument {
                             0
                         )
                     ),
-                    1
+                    0
                 ),
                 isDisplayed()
             )
         )
         viewGroup.check(matches(isDisplayed()))
+
+        val linearLayout = onView(
+            allOf(
+                childAtPosition(
+                    childAtPosition(
+                        withId(android.R.id.content),
+                        0
+                    ),
+                    0
+                ),
+                isDisplayed()
+            )
+        )
+        linearLayout.check(matches(isDisplayed()))
 
         val linearLayout2 = onView(
             allOf(

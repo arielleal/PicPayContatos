@@ -82,10 +82,10 @@ dependencies {
 
     testImplementation "junit:junit:4.13"
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    testImplementation "org.mockito:mockito-core:2.28.2"
+    testImplementation "org.mockito:mockito-core:2.20.1"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
-    androidTestImplementation 'org.mockito:mockito-android:2.28.2'
+    androidTestImplementation 'org.mockito:mockito-android:2.20.1'
     testImplementation 'org.mockito:mockito-inline:2.28.2'
     implementation 'com.squareup.retrofit2:retrofit-mock:2.5.0'
     implementation "org.koin:koin-test:$koin_version"
