@@ -4,21 +4,31 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ServiceConfiguration() {
+class ServiceConfiguration {
 
     private val url = "http://careers.picpay.com/tests/mobdev/"
 
-     fun retrofit(): Retrofit {
-        return Retrofit.Builder()
-                .baseUrl(url)
-                .client(okHttp())
-                .addConverterFactory(GsonConverterFactory.create(gson()))
-                .build()
+    private val retrofit: Retrofit by lazy {
+         Retrofit.Builder()
+             .baseUrl(url)
+             .client(okHttp)
+             .addConverterFactory(GsonConverterFactory.create(gson))
+             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+             .build()
     }
 
-    private fun okHttp(): OkHttpClient {return OkHttpClient.Builder().build()}
+    private val okHttp: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .build()
+    }
 
-    private fun gson(): Gson {return GsonBuilder().create()}
+    private val gson: Gson by lazy {
+        GsonBuilder()
+        .create()
+    }
+
+    fun getInstance(): PicPayService = retrofit.create(PicPayService::class.java)
 }

@@ -1,7 +1,6 @@
 package com.picpay.desafio.android.ui.activity
 
 import android.os.Bundle
-import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -37,16 +36,10 @@ class ContactsActivity : AppCompatActivity() {
         observeErrorMessage()
     }
 
-    override fun onResume() {
-        super.onResume()
-        progressBar.isVisible = true
-        contactsViewModel.loadUsers()
-    }
-
     private fun observeFillUser() {
-        contactsViewModel.users.observe(this, Observer {
+        contactsViewModel.usersSuccess.observe(this, Observer {
             progressBar.isVisible = false
-            fillUserAdapter(contactsViewModel.users.value as List<User>)
+            fillUserAdapter(contactsViewModel.usersSuccess.value as List<User>)
         })
     }
 
@@ -63,7 +56,7 @@ class ContactsActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun fillUserAdapter(user: List<User>){ adapter.users = user }
+    private fun fillUserAdapter(user: List<User>) { adapter.users = user }
 
     private fun showErrorMensager(msgError: String){
         val error = getString(R.string.error, msgError)
