@@ -8,7 +8,7 @@ import org.koin.dsl.module
 
 val koinModule = module {
 
-    single {
+    factory {
         UserService()
     }
     viewModel {

@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +17,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ContactsActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var adapter: UserListAdapter
+    private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.recyclerView) }
+    private val progressBar: ProgressBar by lazy { findViewById<ProgressBar>(R.id.user_list_progress_bar) }
+    private val adapter: UserListAdapter by lazy { UserListAdapter() }
     private val contactsViewModel: ContactsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,39 +28,37 @@ class ContactsActivity : AppCompatActivity() {
 
         configureAdapter()
 
-        progressBar.visibility = View.GONE
+        progressBar.isVisible = true
+
         contactsViewModel.loadUsers()
 
         observeFillUser()
+
         observeErrorMessage()
     }
 
     override fun onResume() {
         super.onResume()
-        progressBar.visibility = View.VISIBLE
+        progressBar.isVisible = true
         contactsViewModel.loadUsers()
     }
 
     private fun observeFillUser() {
         contactsViewModel.users.observe(this, Observer {
-            progressBar.visibility = View.GONE
+            progressBar.isVisible = false
             fillUserAdapter(contactsViewModel.users.value as List<User>)
         })
     }
 
     private fun observeErrorMessage() {
         contactsViewModel.errorMessage.observe(this, Observer {
-            progressBar.visibility = View.GONE
-            recyclerView.visibility = View.GONE
+            progressBar.isVisible = true
+            recyclerView.isVisible = true
             showErrorMensager(contactsViewModel.errorMessage.value.toString())
         })
     }
 
     private fun configureAdapter() {
-        recyclerView = findViewById(R.id.recyclerView)
-        progressBar = findViewById(R.id.user_list_progress_bar)
-
-        adapter = UserListAdapter()
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
@@ -67,7 +66,7 @@ class ContactsActivity : AppCompatActivity() {
     private fun fillUserAdapter(user: List<User>){ adapter.users = user }
 
     private fun showErrorMensager(msgError: String){
-        val error = getString(R.string.error)
-        Toast.makeText(this, error + " - " + msgError, Toast.LENGTH_LONG).show()
+        val error = getString(R.string.error, msgError)
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
     }
 }
